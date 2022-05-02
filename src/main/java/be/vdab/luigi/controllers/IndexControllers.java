@@ -1,21 +1,27 @@
 package be.vdab.luigi.controllers;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalTime;
-//Nadeel van deze aanpak is dat we JAVA en HTML code door elkaar gebruiken
-// @RestController zorgt ervoor dat Spring van die class een object maakt (Spring bean)
-@RestController
+
+
+@Controller
 class IndexControllers {
     // Geeft aan dat de method hieronder een GET request verwerkt naar de URL /.
-    // / staat voor de welkom pagina
+    // / Staat voor de welkom pagina
     @GetMapping("/")
-    // De naam van de method mag vrij gekozen worden. De method geeft een String terug.
-    // Spring stuurt die response naar de browser
-    public String index() {
+    // De naam van de method mag vrij gekozen worden.
+    // Een methode die data doorgeeft aan de Thymeleaf pagina heeft als return type ModelAndView
+    // Model staat voor de data, View staat voor de Thymeleaf pagina.
+    public ModelAndView index() {
         var morgenOfMiddag = LocalTime.now().getHour() < 12 ? "morgen" : "middag";
-        // De String bevat HTML met daarin de tekst morgen of middag.
-        return "<!doctype html><title>Hallo</title><body>Goede " + morgenOfMiddag + "</body></html>";
+        // Er worden 3 parameters ingegeven in het return-object
+        // Parameter 1: De naam van de Thymeleaf pagina terug. Je typt de extensie (.html) niet
+        // Parameter 2: De naam waaronder je een stukje data doorgeeft, dit wordt ook gebruikt
+        //              in de Thymeleaf pagina index.
+        // Parameter 3: De inhoud van de variabele zelf.
+        return new ModelAndView("index", "moment", morgenOfMiddag);
     }
 }
