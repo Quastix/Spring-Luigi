@@ -1,9 +1,12 @@
 package be.vdab.luigi.controllers;
 
+import be.vdab.luigi.domain.Adres;
+import be.vdab.luigi.domain.Persoon;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 
@@ -22,6 +25,13 @@ class IndexControllers {
         // Parameter 2: De naam waaronder je een stukje data doorgeeft, dit wordt ook gebruikt
         //              in de Thymeleaf pagina index.
         // Parameter 3: De inhoud van de variabele zelf.
-        return new ModelAndView("index", "moment", morgenOfMiddag);
+        var modelAndView = new ModelAndView("index", "moment", morgenOfMiddag);
+        // met addObject geef je extra data door, onder andere de naam zaakvoerder
+        // De data is een Persoon object
+        modelAndView.addObject("zaakvoerder",
+                new Persoon("Luigi", "Peperone", 7, true,
+                        LocalDate.of(1996, 1 ,31),
+                        new Adres("Grote markt", "3", 9700, "Oudenaarde")));
+    return modelAndView;
     }
 }
