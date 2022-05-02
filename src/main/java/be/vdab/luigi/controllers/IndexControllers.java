@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalTime;
-
+//Nadeel van deze aanpak is dat we JAVA en HTML code door elkaar gebruiken
 // @RestController zorgt ervoor dat Spring van die class een object maakt (Spring bean)
 @RestController
 class IndexControllers {
