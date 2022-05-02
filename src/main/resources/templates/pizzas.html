@@ -16,6 +16,7 @@ je verwijst met de id pizzatabel naar het luigi.css bestand voor de opmaak-->
     <tr>
         <th>Naam</th>
         <th>Prijs</th>
+        <th>Pikant</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +27,8 @@ je verwijst met de id pizzatabel naar het luigi.css bestand voor de opmaak-->
         <td th:text="*{naam}"></td>
         <!--getPrijs van de pizza-->
         <td th:text="*{prijs}"></td>
+        <!--th:if pikant wordt enkel in de tabel opgenomen als de getPikant true is-->
+        <td><span th:if="*{pikant}">pikant</span></td>
     </tr>
     </tbody>
 </table>
