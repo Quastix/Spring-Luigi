@@ -23,8 +23,16 @@
     <!--Met th:each itereert over de pizza's in de pizza array
     th:object geeft aan dat je attributen zal lezen van pizza-->
     <tr th:each="pizza : ${pizzas}" th:object="${pizza}">
-      <!--getNaam van de pizza-->
-      <td th:text="*{naam}"></td>
+      <!--
+      th:text="*{naam}" = getNaam van de pizza
+      th:href="@{/pizza/{id}(id=*{id})} = de URI-template
+      Thymeleaf maakt een URL op basis van de URI-template.
+      Je typt tussen de ronde haakjes dat Thymeleaf de path variable id moet invullen
+      met de id van de huidige pizza. Je vindt dit nummer in *{id}
+
+      Een URI-template is een URL waarin je de path variable aangeeft met een naam tussen accolades.
+      -->
+      <td><a th:text="*{naam}" th:href="@{/pizza/{id}(id=*{id})}"></a></td>
       <!--getPrijs van de pizza-->
       <td th:text="*{prijs}"></td>
       <!--th:if pikant wordt enkel in de tabel opgenomen als de getPikant true is-->

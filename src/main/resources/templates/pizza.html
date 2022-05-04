@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="https://www.thymeleaf.org">
+<!--Als de controller een pizza bestaat, laat je de naam zien,
+anders krijg je de tekst Pizza niet gevonden -->
+<head th:replace="fragments::head(title=${pizza} ? ${pizza.naam} :
+'Pizza niet gevonden')"></head>
+<body>
+<nav th:replace="fragments::menu"></nav>
+<!--De pagina hoort bij de controller method pizza. Die verwerkt een path variabele id.
+ Spring geeft de path variabele zelf doo rana de THymeleaf pagina onder de naam id.-->
+<div th:if="not ${pizza}" class="fout">Pizza niet gevonden:
+<th:block th:text="${id}"></th:block>
+</div>
+<th:block th:if="${pizza}" th:object="${pizza}">
+    <h1 th:text="*{naam}"></h1>
+    <dl>
+        <dt>Nummer</dt>
+        <dd th:text="*{id}"></dd>
+        <dt>Prijs</dt>
+        <dd th:text="*{prijs}"></dd>
+        <dt>Pikant</dt>
+        <dd th:text="*{pikant} ? 'Ja' : 'Nee'"></dd>
+    </dl>
+</th:block>
+</body>
+</html>
