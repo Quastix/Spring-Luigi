@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Pizza Luigi</title>
-  <link rel="icon" href="images/luigi.ico" type="image/x-icon">
-  <link rel="stylesheet" href="css/luigi.css">
+    <meta charset="UTF-8">
+    <title>Pizza Luigi</title>
+    <link rel="icon" href="images/luigi.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/luigi.css">
 </head>
 <body>
 <h1>Pizza Luigi</h1>
 <img src="images/luigi.jpg" alt="pizza" class="fullwidth">
-<h2>Goede <span th:text ="${moment}"></span></h2>
+<h2>Goede <th:block th:text="${moment}"></th:block></h2>
 <h2>De zaakvoerder</h2>
-<dl th:object ="${zaakvoerder}">
-  <dt>Naam</dt>
-  <!--Thymeleaf vertaald naam naar getNaam-->
-  <dd th:text ="*{naam}"></dd>
-  <dt>Aantal kinderen</dt>
-  <!--Thymeleaf vertaald aantalKinderen naar getAantalKinderen-->
-  <dd th:text ="*{aantalKinderen}"></dd>
-  <dt>Gehuwd</dt>
-  <!--Thymeleaf vertaald gehuwd naar getGehuwd-->
-  <dd th:text ="*{gehuwd}"></dd>
-  <dt>Adres</dt>
-  <!--Thymeleaf Combineerd door | | de verschillende gegevens tot 1 zin
-  Thymeleaf vertaald straat naar getStraat
-  Thymeleaf vertaald huisNr naar getHuisNr
-  Thymeleaf vertaald postcode naar getPostcode
-  Thymeleaf vertaald gemeente naar getGemeente-->
-  <dd th:object="${zaakvoerder.adres}" th:text ="|*{straat} *{huisNr} *{postcode} *{gemeente}|"></dd>
+<dl th:object="${zaakvoerder}">
+    <dt>Naam</dt>
+    <!--Thymeleaf vertaald naam naar getNaam-->
+    <dd th:text="*{naam}"></dd>
+    <dt>Aantal kinderen</dt>
+    <!--Thymeleaf vertaald aantalKinderen naar getAantalKinderen-->
+    <dd th:text="*{aantalKinderen}"></dd>
+    <dt>Gehuwd</dt>
+    <!--Thymeleaf vertaald gehuwd naar getGehuwd-->
+    <dd th:text="*{gehuwd}"></dd>
+    <dt>Adres</dt>
+    <!--Thymeleaf Combineerd door | | de verschillende gegevens tot 1 zin
+    Thymeleaf vertaald straat naar getStraat
+    Thymeleaf vertaald huisNr naar getHuisNr
+    Thymeleaf vertaald postcode naar getPostcode
+    Thymeleaf vertaald gemeente naar getGemeente-->
+    <dd th:object="${zaakvoerder.adres}" th:text="|*{straat} *{huisNr} *{postcode} *{gemeente}|"></dd>
 </dl>
 </body>
 </html>
