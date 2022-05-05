@@ -14,7 +14,7 @@ import java.util.Optional;
 @Controller
 // Met @RequestMapping voer je de domeinnaam in waar @GetMapping op verder gaat.
 @RequestMapping("pizzas")
-public class PizzaController {
+class PizzaController {
 // aanmaken van een array van pizzas
     private final Pizza[] allePizzas = {
             new Pizza(1, "Prosciutto", BigDecimal.valueOf(4), true),
@@ -35,7 +35,7 @@ public class PizzaController {
     private Optional<Pizza> findByIdHelper(long id){
         return Arrays.stream(allePizzas).filter(pizza->pizza.getId()==id).findFirst();
     }
-    //Onderstaande method verwerkt GET request naar URL's die passen bij de URL template pizzas/{id}
+    //Onderstaande method verwerkt GET request naar URL's die passen bij de URL-template pizzas/{id}
     @GetMapping("{id}")
     // @PathVariable = Spring vult de parameter id met de waarde van de path variabele met dezelfde
     // naam(id). Als de URl pizzas/1 is, vult Spring id met 1.
@@ -43,12 +43,12 @@ public class PizzaController {
         // samenwerken met de pagina pizza.html
         var modelAndView = new ModelAndView("pizza");
         // Je roept de findByIdHelper method op en je gebruikt id als parameter. Als je de pizza vindt,
-        // geef je die door aan de Thymelead pagina onder de naam pizza.
+        // geef je die door aan de Thymeleaf pagina onder de naam pizza.
         findByIdHelper(id).ifPresent(gevondenPizza ->
                 /*
                 Spring kijkt naar het type van gevondenPizza. Dit is de class Pizza.
                 Spring wijzigt de 1e letter daarvan naar kleine letter: pizza.
-                Spring geeft de data onde die naam (pizza) aan de Thymeleaf pagina.
+                Spring geeft de data onder die naam (pizza) aan de Thymeleaf pagina.
                  */
                 modelAndView.addObject(gevondenPizza));
         return modelAndView;

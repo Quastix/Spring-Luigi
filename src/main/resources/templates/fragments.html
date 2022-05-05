@@ -4,10 +4,11 @@
     <ul>
       <li><a th:href="@{/}">Welkom</a></li>
       <li><a th:href="@{/pizzas}">Pizza's</a></li>
+      <li><a th:href="@{/os}">OS</a></li>
     </ul>
   </nav>
   <head th:fragment="head(title)">
-    <link rel="icon" th:href="@{/images/luigi/ico}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/luigi.ico}" type="image/x-icon">
     <title th:text="${title}"></title>
     <link rel="stylesheet" th:href="@{/css/luigi.css}">
   </head>
