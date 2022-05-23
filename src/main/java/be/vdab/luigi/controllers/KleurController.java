@@ -11,9 +11,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
-@Controller @RequestMapping("kleuren")
+// @Controller zorgt ervoor dat Spring een bean van de class maakt.
+// Een bean is een Java object waar Spring handelingen op kan uitvoeren.
+@Controller
+// Met @RequestMapping voer je de domeinnaam in waar @GetMapping op verder gaat.
+@RequestMapping("kleuren")
 class KleurController {
+    // De variabele EEN_JAAR_IN_SECONDEN is het aantal seconden dat de cookie wordt bewaard
+    // final = waarde is een constante. (in drukletters geschreven)
+    // private = eigen aan deze class
+    // static = variabele wordt opgeslagen in de class en niet in een object.
     private static final int EEN_JAAR_IN_SECONDEN = 31_536_000;
+    // Geeft aan dat de method hieronder een GET request verwerkt naar de pagina sauzen bij @RequestMapping.
+    // Get request vraag enkel data.
     @GetMapping
     // Spring vult de parameter kleur met de inhoud van de cookie met dezelfde naam (kleur).
     // Als de cookie ontbreekt, is de Optional leeg.
@@ -23,6 +33,10 @@ class KleurController {
         kleur.ifPresent(hetKleur -> modelAndView.addObject("kleur", hetKleur));
         return modelAndView;
     }
+    // Geeft aan dat de method hieronder een GET request
+    // verwerkt naar de pagina sauzen bij @RequestMapping en de naam gekozen kleur bij @GetMapping.
+    // Het URL-adres is /kleuren/de naam van de gekozen kleur
+    // Get request vraag enkel data.
     @GetMapping("{kleur}")
     // De Thymeleaf pagina zal 2 hyperlinks bevatten.
     // Bij een klik op de 1e hyperlink stuurt de browser een GET request naar /kleuren/roze
@@ -43,7 +57,7 @@ class KleurController {
         //      b. path bevat /mandje. Enkel requests naar URL's die beginnen met /mandje
         //         kunnen de cookie lezen.
         cookie.setPath("/");
-        // Je voegt de cookie toe aan de response
+        // Je voegt de cookie toe aan de response variabele
         response.addCookie(cookie);
         // Je werkt samen met kleuren.html. Je moet de kleur niet zelf doorgeven
         // aan de Thymeleaf pagina. Spring doet dit zelf met elke path variabele.

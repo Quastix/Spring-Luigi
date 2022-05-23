@@ -8,13 +8,24 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 
+// @Controller zorgt ervoor dat Spring een bean van de class maakt.
+// Een bean is een Java object waar Spring handelingen op kan uitvoeren.
 @Controller
 // De controller verwerkt request naar de URL-os.
 @RequestMapping("os")
+
 class OSController {
+    // De variabele PSS is een Array van Strings met besturingssystemen
+    // final = waarde is een constante. (in drukletters geschreven)
+    // private = eigen aan deze class
+    // static = variabele wordt opgeslagen in de class en niet in een object.
     private static final String[] OSS={"Windows", "Macintosh", "Android", "Linux"};
     @GetMapping
-    // Spring vult de method parameter userAgent met de inhdoud vna de request header User-agent
+    // Geeft aan dat de method hieronder een GET request verwerkt naar de URL ("/").
+    // Get request vraag enkel data.
+    // ("/") Staat voor de welkom pagina
+    // @GetMapping
+    // Spring vult de method parameter userAgent met de inhoud vna de request header User-agent
     // vermeld in @RequestHeader.
     public ModelAndView os(@RequestHeader("User-Agent") String userAgent){
         // Je werkt samen met os.html

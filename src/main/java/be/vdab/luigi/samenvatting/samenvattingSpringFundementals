@@ -1,0 +1,10 @@
+Je leerde drie soorten Thymeleaf expressies:
+• ${...} Data lezen die je kreeg van de controller.
+• *{...} Attribuut lezen van een object dat je aangaf met th:object.
+• @{...} URL maken.
+
+Een bean is een java object dat Spring maakt.
+Omdat Spring zo een object maak en beheert, kan Spring handelingen op dit object doen.
+
+Spring makt een bean van een class als voor die class 1 van volgende annotations staat:
+@repostiory, @service, @RestController, @Controller, @Component, ...

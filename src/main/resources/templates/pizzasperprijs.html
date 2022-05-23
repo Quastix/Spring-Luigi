@@ -1,7 +1,7 @@
 <!--Thymeleaf expressies:
 • ${...} Data lezen die je kreeg van de controller.
-            - @PathVariable
-            - attribuutName van een modelAndView
+          - @PathVariable
+          - attribuutName van een modelAndView
 
 • *{...} Attribuut lezen van een object dat je aangaf met th:object.
 • @{...} URL maken.
@@ -44,26 +44,35 @@
               Thymeleaf vervangt het huidig <nav> element door het fragment met de naam menu in het
               bestand fragments(.html).-->
 <!DOCTYPE html>
-<!--Je associert de prefix th met de URI van de Thymeleaf library (http://www.thymeleaf.org)
- Met de prefixcode neem je later (if, for, text, block, ...) op in de pagina.-->
-<html lang="nl" xmlns:th='http://www.thymeleaf.org'>
-<!--Thymeleaf vervangt het huidig <head> element door het fragment met de naam head. Je geeft
-Kleur mee als waarde voor de parameter title van dit fragment. Thymeleaf vervangt het huidig
-<head> element door het fragment met de naam head. Je geeft Pizza Luigi mee als waarde voor de
-parameter title van dit fragment. -->
-<head th:replace="fragments::head(title='Kleur')"></head>
-<!--Je verwijst naar de CSS class roze of blauw die je van de controller kreeg onder de naam kleur.
-    Als er geen variabele kleur is, vereenvoudigt Thymeleaf deze regel tot <body>.-->
-<body th:class="${kleur}">
-<!--Thymeleaf vervangt het huidig <nav> element door het fragment met de naam menu in het
-bestand fragments(.html).-->
+<html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<!--thymeleaf vervangt het element head door het head element van fragments.html met de naam head
+    als titel geven we de tekst 'Prijzen' mee-->
+<head th:replace="fragments::head(title='Prijzen')"></head>
+<body>
+<!--thymeleaf vervangt het element nav door het nav element van fragments.html met het naam menu -->
 <nav th:replace="fragments::menu"></nav>
-<h1>Kleur</h1>
+<h1>Prijzen</h1>
 <ul>
-    <!--De link om een cookie aan te maken voor de achtergrond te veranderen
-     th:href bevat de url van de cookie.-->
-    <li><a th:href="@{/kleuren/roze}">Roze</a></li>
-    <li><a th:href="@{/kleuren/blauw}">Blauw</a></li>
+  <!--th:each itereert over ${prijzen}, de data hiervan is een stream BigDecimals van de
+  verschillende prijzen van de pizzas elke prijs wordt aanspreekbaar met ${prijs}
+  !!!! Hou rekening dat die niet dezelfde data is als ${prijs} onder </ul>-->
+  <li th:each="prijs:${prijzen}">
+    <!-- th:href maakt een hyperlink voor de prijs aan, de prijs wordt de tekst van de hyperlink-->
+    <a th:href="@{/pizzas/prijzen/{prijs}(prijs=${prijs})}"
+       th:text="${prijs}"></a>
+  </li>
 </ul>
+<!-- ${prijs} = de @PathVariable van het type BigDecimal die meegeven wordt met de findByPrijs
+method in PizzaController Spring geeft de path variabele zelf door aan de Thymeleaf pagina onder
+de naam prijs.
+th:if geeft true wanneer If condition is a non-zero number or character.-->
+<th:block th:if="${prijs}">
+  <!--De waarde van de ${prijs} wordt vermeld is de tekst op de website -->
+  <h2> Pizzas van <th:block th:text="${prijs}"></th:block> Euro:</h2>
+  <!--th:replace zorgt ervoor dat we het table element vervangen wordt door het table element
+    van fragements.html met de naam pizzaTabel,
+    de data ${pizzas} is een array van alle pizzas. Die overeenkomen met de waarde van ${prijs}-->
+  <table th:replace="fragments::pizzaTabel(pizzas=${pizzas})"></table>
+</th:block>
 </body>
 </html>

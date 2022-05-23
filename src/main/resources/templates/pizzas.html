@@ -1,13 +1,64 @@
+<!--Thymeleaf expressies:
+• ${...} Data lezen die je kreeg van de controller.
+            - @PathVariable
+            - attribuutName van een modelAndView
+
+• *{...} Attribuut lezen van een object dat je aangaf met th:object.
+• @{...} URL maken.
+
+• th:text       th:text="${...}", vervangt de tekst tussen een element door de data die je
+                van de controller doorkreeg.
+
+• th:object     th:object="${...}", geeft aan dat je van de data die je van de controller doorkreeg,
+                attributen gaat lezen. Dit wordt in het element en al zijn child elementen toegepast.
+                th:text="*{...}", leest een attribuut van de data in th:object.
+
+• th:each       th:each=" ... : ${...}", itereert over de array die je meegeeft in ${...},
+                ... wordt gedefinieerd als variabele. Later kunnen we die variabele aanspreken mbv.
+                th:text="${...}" om de data van de verschillende elementen van de array voor te stellen.
+
+• th:if       <td><th:block th:if="*{...}">...</th:block></td>, het attribuut na th:if is een boolean.
+              th:if controleert of de waarde true is, als dit zo is zal html het stuk text tussen de
+              elementen tonen.
+
+              The th:if = "${condition}" attribute can evaluate more than simple boolean variables and statements.
+              It will also return true according to these rules:
+
+              If condition is a boolean or statement and true.
+              If condition is a non-zero number or character.
+              If condition is a string that is NOT "false", "off", or "no".
+              If condition is a data type other than a boolean, number, character, or String.
+
+              th:if will evaluate to false whenever condition is null.
+
+• th:block    <th:block></th:block> dient om Thymeleaf attribute toe te passen.
+              De elementen tussen th:block hebben geen nut voor de browser.
+
+• th:href     th:href="@{/...}", bevat de url van de link of bestand dat je wil aanspreken.
+              / staat voor de root URl van je website.
+
+• the:replace th:replace=" ... :: ... ", vervangt het huidige element waar dit in word meegegeven,
+              door het element dat in het bestand aangegeven met de eerste ..., gevolgd door de naam
+              in de laatste ...
+              <nav th:replace="fragments::menu"></nav>
+              Thymeleaf vervangt het huidig <nav> element door het fragment met de naam menu in het
+              bestand fragments(.html).-->
 <!DOCTYPE html>
+<!--Je associert de prefix th met de URI van de Thymeleaf library (http://www.thymeleaf.org)
+ Met de prefix code neem je later (if, for, text, block, ...) op in de pagina.-->
 <html lang="nl" xmlns:th="http://www.thymeleaf.org">
+<!--Thymeleaf vervangt het huidig <head> element door het fragment met de naam head. Je geeft
+Pizza Luigi mee als waarde voor de parameter title van dit fragment. Thymeleaf vervangt het huidig
+<head> element door het fragment met de naam head. Je geeft Pizza Luigi mee als waarde voor de
+parameter title van dit fragment. -->
 <head th:replace="fragments::head(title='Pizza\'s')"></head>
 <body>
 <!--navigatie menu bovenaan de website wordt vervangen door code in (fragments.html)-->
 <nav th:replace="fragments::menu"></nav>
 <h1>Pizza's</h1>
-<!--Aanmaken van een pizzatabel
-Met een hoofding van naam en prijs
-je verwijst met de id pizzatabel naar het luigi.css bestand voor de opmaak-->
+<!--th:replace zorgt ervoor dat we het table element vervangen wordt door het table element
+    van fragements.html met de naam pizzaTabel,
+    de data ${allePizzas} is een array van alle pizzas.-->
 <table th:replace="fragments::pizzaTabel(pizzas=${allePizzas})"></table>
 </body>
 </html>

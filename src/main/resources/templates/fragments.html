@@ -1,17 +1,84 @@
+<!--Dit HTML-bestand dient om boilerplate code vermijden.
+ Dit bestand mag eender welke naam krijgen. In de cursus krijgt het de naam fragment.
+
+ Thymeleaf expressies:
+• ${...} Data lezen die je kreeg van de controller.
+          - @PathVariable
+          - attribuutName van een modelAndView
+
+• *{...} Attribuut lezen van een object dat je aangaf met th:object.
+• @{...} URL maken.
+
+• th:text       th:text="${...}", vervangt de tekst tussen een element door de data die je
+                van de controller doorkreeg.
+
+• th:object     th:object="${...}", geeft aan dat je van de data die je van de controller doorkreeg,
+                attributen gaat lezen. Dit wordt in het element en al zijn child elementen toegepast.
+                th:text="*{...}", leest een attribuut van de data in th:object.
+
+• th:each       th:each=" ... : ${...}", itereert over de array die je meegeeft in ${...},
+                ... wordt gedefinieerd als variabele. Later kunnen we die variabele aanspreken mbv.
+                th:text="${...}" om de data van de verschillende elementen van de array voor te stellen.
+
+• th:if       <td><th:block th:if="*{...}">...</th:block></td>, het attribuut na th:if is een boolean.
+              th:if controleert of de waarde true is, als dit zo is zal html het stuk text tussen de
+              elementen tonen.
+
+              The th:if = "${condition}" attribute can evaluate more than simple boolean variables and statements.
+              It will also return true according to these rules:
+
+              If condition is a boolean or statement and true.
+              If condition is a non-zero number or character.
+              If condition is a string that is NOT "false", "off", or "no".
+              If condition is a data type other than a boolean, number, character, or String.
+
+              th:if will evaluate to false whenever condition is null.
+
+• th:block    <th:block></th:block> dient om Thymeleaf attribute toe te passen.
+              De elementen tussen th:block hebben geen nut voor de browser.
+
+• th:href     th:href="@{/...}", bevat de url van de link of bestand dat je wil aanspreken.
+              / staat voor de root URl van je website.
+
+• the:replace th:replace=" ... :: ... ", vervangt het huidige element waar dit in word meegegeven,
+              door het element dat in het bestand aangegeven met de eerste ..., gevolgd door de naam
+              in de laatste ...
+              <nav th:replace="fragments::menu"></nav>
+              Thymeleaf vervangt het huidig <nav> element door het fragment met de naam menu in het
+              bestand fragments(.html).-->
+
+<!--Je associert de prefix th met de URI van de Thymeleaf library (http://www.thymeleaf.org)
+ Met de prefixcode neem je later (if, for, text, block, ...) op in de pagina.-->
 <div xmlns:th="http://www.thymeleaf.org">
   <!--navigatie menu bovenaan de website-->
   <nav th:fragment="menu">
+    <!-- elementen die terug te vinden zijn in de navigatiebalk bovenaan op de website -->
     <ul>
+      <!-- th:href:     zorgt ervoor dat het een link is om op te klikken
+           @{/}:        Root URL van de website (localhost:8080)
+           @{/pizzas}:  URL van de website (localhost:8080/pizzas)
+           Welkom:      De tekst in het navigatiemenu-->
       <li><a th:href="@{/}">Welkom</a></li>
       <li><a th:href="@{/pizzas}">Pizza's</a></li>
       <li><a th:href="@{/os}">OS</a></li>
+      <li><a th:href="@{/kleuren}">kleuren</a></li>
+      <li><a th:href="@{/pizzas/prijzen}">Prijzen</a></li>
     </ul>
   </nav>
+  <!--Het fragment heet head. Het heeft één parameter. Het heet title. Een fragment kan meerdere
+  parameters hebben. Je scheidt ze met een komma.
+  (tile) geeft aan dat de titel op de pagina wordt gedefinieerd dit het fragment head implementer-->
   <head th:fragment="head(title)">
     <link rel="icon" th:href="@{/images/luigi.ico}" type="image/x-icon">
+    <!--Je gebruikt de inhoud van de parameter title. Ingegeven in <head ...> -->
     <title th:text="${title}"></title>
+    <!-- th:href:       we linken hierin het css bestand dat we hebben aangemaakt -->
     <link rel="stylesheet" th:href="@{/css/luigi.css}">
   </head>
+  <!--Het fragment heet table. Het heeft één parameter. Het heet title. Een fragment kan meerdere
+  parameters hebben. Je scheidt ze met een komma.
+  (pizzas) geeft aan dat de pizzas in de tabel op de pagina wordt gedefinieerd dit het fragment table
+   implementer-->
   <table th:fragment="pizzaTabel(pizzas)" xmlns:th="http://www.thymeleaf.org">
     <thead>
     <tr>
@@ -22,10 +89,11 @@
     </thead>
     <tbody>
     <!--Met th:each itereert over de pizza's in de pizza array
-    th:object geeft aan dat je attributen zal lezen van pizza-->
+    th:object geeft aan dat je attributen zal lezen de class pizza
+    dit object wordt doorgegeven aan de child elementen-->
     <tr th:each="pizza : ${pizzas}" th:object="${pizza}">
       <!--
-      th:text="*{naam}" = getNaam van de pizza
+      th:text="*{naam}" = getNaam van de class pizza
       th:href="@{/pizza/{id}(id=*{id})} = de URI-template
       Thymeleaf maakt een URL op basis van de URI-template.
       Je typt tussen de ronde haakjes dat Thymeleaf de path variable id moet invullen
@@ -33,8 +101,8 @@
 
       Een URI-template is een URL waarin je de path variable aangeeft met een naam tussen accolades.
       -->
-      <td><a th:text="*{naam}" th:href="@{/pizza/{id}(id=*{id})}"></a></td>
-      <!--getPrijs van de pizza-->
+      <td><a th:text="*{naam}" th:href="@{/pizzas/{id}(id=*{id})}"></a></td>
+      <!--getPrijs van de class pizza-->
       <td th:text="*{prijs}"></td>
       <!--th:if pikant wordt enkel in de tabel opgenomen als de getPikant true is-->
       <td><th:block th:if="*{pikant}">pikant</th:block></td>
