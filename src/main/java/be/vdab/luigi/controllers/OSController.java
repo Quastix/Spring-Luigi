@@ -27,6 +27,15 @@ class OSController {
     // @GetMapping
     // Spring vult de method parameter userAgent met de inhoud vna de request header User-agent
     // vermeld in @RequestHeader.
+
+    // Locatie van request headers in de browser:
+    //    //  1.  Druk F12.
+    //    //  2.  Surf naar http://localhost:8080
+    //    //  3.  Kies in het tabblad Network de GET request naar /.
+    //    //      Scrol rechts naar beneden tot Request Headers.
+    //    //      Een header heeft een naam en een waarde. Voorbeelden:
+    //    //      De header Accept-Language header bevat de voorkeur taal en land van de gebruiker.
+    //    //      De header User-Agent bevat het type browser en het besturingssysteem.
     public ModelAndView os(@RequestHeader("User-Agent") String userAgent){
         // Je werkt samen met os.html
         var modelAndView = new ModelAndView("os");

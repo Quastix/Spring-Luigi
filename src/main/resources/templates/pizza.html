@@ -85,6 +85,10 @@ anders krijg je de tekst Pizza niet gevonden -->
         <dt>Prijs</dt>
         <!--Thymeleaf vertaald prijs naar getPrijs van het object pizza van de class pizza-->
         <dd th:text="*{prijs}"></dd>
+        <!--{$inDollar} verwijst naar de pizza in dollar in de PizzaController
+        Bij de functie findByID-->
+        <dt th:if="${inDollar}">In dollar</dt>
+        <dd th:if="${inDollar}" th:text="${inDollar}"></dd>
         <dt>Pikant</dt>
         <!--Thymeleaf vertaald pikant naar getPikant van het object pizza van de class pizza
         omdat het een boolean kunnen we met de conditional operator '?'

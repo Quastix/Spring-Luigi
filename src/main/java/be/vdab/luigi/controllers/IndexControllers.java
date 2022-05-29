@@ -23,7 +23,7 @@ class IndexControllers {
     //      AtomicInteger       een thread safe integer
     //      AtomicLong          een thread safe long
     // Veel classes uit de standaard Java library zijn niet thread safe:
-    //  JBDC objecten (Connection, Statement, ResultSet,...)
+    //  JBDC-objecten (Connection, Statement, ResultSet,...)
     //  Collection objecten (ArrayList, HashSet, HashMap, ...)
     //      CopyOnWriteArrayList    een thread safe List
     //      CopyWriteArraySet       een thread safe Set

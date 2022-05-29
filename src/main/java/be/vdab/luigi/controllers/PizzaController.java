@@ -1,6 +1,8 @@
 package be.vdab.luigi.controllers;
 
 import be.vdab.luigi.domain.Pizza;
+import be.vdab.luigi.exceptions.KoersClientException;
+import be.vdab.luigi.services.EuroService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,11 +21,24 @@ import java.util.stream.Stream;
 // Met @RequestMapping voer je de domeinnaam in waar @GetMapping op verder gaat.
 @RequestMapping("pizzas")
 class PizzaController {
-// aanmaken van een array van pizzas
+// variabelen
+    // aanmaken van een array van pizzas
     private final Pizza[] allePizzas = {
             new Pizza(1, "Prosciutto", BigDecimal.valueOf(4), true),
             new Pizza(2 ,"Margherita", BigDecimal.valueOf(5), false),
             new Pizza(3, "Calzone", BigDecimal.valueOf(4), false)};
+
+    //
+    private final EuroService euroService;
+
+    // Bij de start van de website roept maakt Spring een bean van de class PizzaController.
+    // Spring roept daarbij de constructor op. Spring geeft de EuroService bean mee als
+    // constructor parameter. IntelliJ toont dit met een symbool in de marge. Als je daarop klikt, opent IntelliJ
+    // de class van deze bean: EuroService.
+    PizzaController(EuroService euroService) {
+        this.euroService = euroService;
+    }
+
     // De method op de volgende regel (findAll) verwerkt GET request naar de URL /pizzas
     @GetMapping
     public ModelAndView findAll(){
@@ -44,19 +59,30 @@ class PizzaController {
     @GetMapping("{id}")
     // @PathVariable = Spring vult de parameter id met de waarde van de path variabele met dezelfde
     // naam(id). Als de URl pizzas/1 is, vult Spring id met 1.
-    public ModelAndView findById(@PathVariable long id){
+    public ModelAndView findById(@PathVariable long id) {
         // samenwerken met de pagina pizza.html
         var modelAndView = new ModelAndView("pizza");
         // Je roept de findByIdHelper method op en je gebruikt id als parameter. Als je de pizza vindt,
         // geef je die door aan de Thymeleaf pagina onder de naam pizza.
-        findByIdHelper(id).ifPresent(gevondenPizza ->
-                modelAndView.addObject("pizza", gevondenPizza));
+        findByIdHelper(id).ifPresent(gevondenPizza -> {
+                modelAndView.addObject("pizza", gevondenPizza);
                 /*modelAndView.addObject(gevondenPizza)); is ook mogelijk, maar vind het momenteel
-                nog te verwarrend ik hou geen rekening ermee dat ik de attribuutnaam niet vind.
+                nog te verwarrend ik hou geen rekening ermee dat ik de attribuut-naam niet vind.
                 Spring kijkt naar het type van gevondenPizza. Dit is de class Pizza.
                 Spring wijzigt de 1e letter daarvan naar kleine letter: pizza.
                 Spring geeft de data onder die naam (pizza) aan de Thymeleaf pagina.
                  */
+        try {
+            // Je roept de method naarDollar van de class EuroService op.
+            //Je geeft de pizza prijs in euro mee als parameter.
+            //Je krijgt de prijs in dollar terug.
+            //Je geeft die door aan de Thymeleaf pagina onder de naam inDollar.
+            modelAndView.addObject(
+                    "inDollar", euroService.naarDollar(gevondenPizza.getPrijs()));
+        } catch (KoersClientException ex) {
+            // Hier komt later code die de exception verwerkt
+        }
+    });
         return modelAndView;
     }
     // de method findPrijzenHelper heeft als return waarde een datastroom van BigDecimals
@@ -68,6 +94,7 @@ class PizzaController {
     private Stream<BigDecimal> findPrijzenHelper() {
         return Arrays.stream(allePizzas).map(Pizza::getPrijs).distinct().sorted();
     }
+
     //Onderstaande method verwerkt GET request naar URL's die passen bij de URL-template pizzas/prijzen
     @GetMapping("prijzen")
     public ModelAndView prijzen(){
@@ -81,6 +108,8 @@ class PizzaController {
         // Parameter 2: De naam waaronder je een stukje data doorgeeft, dit wordt ook gebruikt
         //              in de Thymeleaf pagina index.
         // Parameter 3: De inhoud van de variabele zelf.
+        // OPMERKING!   Na een stream moet een .iterator geplaatst worden.
+        //              Als dat niet gebeurt dan zal de website een foute pagina weergeven.
         return new ModelAndView("pizzasperprijs", "prijzen",
                 findPrijzenHelper().iterator());
     }
